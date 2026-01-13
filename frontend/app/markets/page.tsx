@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Search, Filter, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,6 @@ import { Market } from "@/types";
 import { useStore } from "@/store/useStore";
 
 export default function MarketsPage() {
-  const searchParams = useSearchParams();
   const { selectedPlatform, setSelectedPlatform } = useStore();
 
   const [markets, setMarkets] = useState<Market[]>([]);

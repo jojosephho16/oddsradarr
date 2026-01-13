@@ -17,7 +17,7 @@ import { TrendingUp } from "lucide-react";
 
 interface OIChartProps {
   data: Array<{
-    timestamp: string;
+    time: string;
     value: number;
   }>;
   title?: string;
@@ -29,9 +29,9 @@ function generateMockData() {
   const data = [];
   const now = Date.now();
   for (let i = 24; i >= 0; i--) {
-    const timestamp = new Date(now - i * 3600 * 1000).toISOString();
+    const time = new Date(now - i * 3600 * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     const value = 1000000 + Math.random() * 500000 + (24 - i) * 20000;
-    data.push({ timestamp, value });
+    data.push({ time, value });
   }
   return data;
 }
@@ -94,15 +94,9 @@ export default function OIChart({ data, title = "Open Interest", loading = false
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#2A2F45" />
               <XAxis
-                dataKey="timestamp"
+                dataKey="time"
                 stroke="#8B92A5"
                 fontSize={10}
-                tickFormatter={(value) =>
-                  new Date(value).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                }
               />
               <YAxis
                 stroke="#8B92A5"

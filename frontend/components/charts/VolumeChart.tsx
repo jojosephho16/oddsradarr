@@ -15,7 +15,7 @@ import { BarChart3 } from "lucide-react";
 
 interface VolumeChartProps {
   data: Array<{
-    timestamp: string;
+    time: string;
     value: number;
   }>;
   title?: string;
@@ -27,9 +27,9 @@ function generateMockData() {
   const data = [];
   const now = Date.now();
   for (let i = 24; i >= 0; i--) {
-    const timestamp = new Date(now - i * 3600 * 1000).toISOString();
+    const time = new Date(now - i * 3600 * 1000).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     const value = 50000 + Math.random() * 150000;
-    data.push({ timestamp, value });
+    data.push({ time, value });
   }
   return data;
 }
@@ -90,15 +90,9 @@ export default function VolumeChart({
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#2A2F45" />
               <XAxis
-                dataKey="timestamp"
+                dataKey="time"
                 stroke="#8B92A5"
                 fontSize={10}
-                tickFormatter={(value) =>
-                  new Date(value).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                }
               />
               <YAxis
                 stroke="#8B92A5"
