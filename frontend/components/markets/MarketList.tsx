@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useStore } from "@/store/useStore";
-import { formatCurrency, formatPercent } from "@/lib/utils";
+import { formatMarketCurrency, formatPercent } from "@/lib/utils";
 import { Market } from "@/types";
 import MarketCard from "./MarketCard";
 
@@ -182,10 +182,10 @@ export default function MarketList({ markets, loading = false }: MarketListProps
                       {(market.probability * 100).toFixed(1)}%
                     </td>
                     <td className="p-3 text-right text-accent-bullish">
-                      {formatCurrency(market.open_interest)}
+                      {formatMarketCurrency(market.open_interest, market)}
                     </td>
                     <td className="p-3 text-right text-accent-volume">
-                      {formatCurrency(market.volume_24h)}
+                      {formatMarketCurrency(market.volume_24h, market)}
                     </td>
                     <td className="p-3 text-right">
                       <div

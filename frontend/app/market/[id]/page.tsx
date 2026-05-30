@@ -24,7 +24,7 @@ import VolumeChart from "@/components/charts/VolumeChart";
 import ProbabilityChart from "@/components/charts/ProbabilityChart";
 import { getMarket, getMarketHistory } from "@/lib/api";
 import { useStore } from "@/store/useStore";
-import { formatCurrency, formatPercent } from "@/lib/utils";
+import { formatMarketCurrency, formatPercent } from "@/lib/utils";
 import { Market } from "@/types";
 
 export default function MarketDetailPage() {
@@ -166,7 +166,7 @@ export default function MarketDetailPage() {
               Open Interest
             </p>
             <p className="text-2xl font-bold mt-1 text-accent-bullish">
-              {formatCurrency(market.open_interest)}
+              {formatMarketCurrency(market.open_interest, market)}
             </p>
           </CardContent>
         </Card>
@@ -178,7 +178,7 @@ export default function MarketDetailPage() {
               24h Volume
             </p>
             <p className="text-2xl font-bold mt-1 text-accent-volume">
-              {formatCurrency(market.volume_24h)}
+              {formatMarketCurrency(market.volume_24h, market)}
             </p>
           </CardContent>
         </Card>
@@ -265,7 +265,7 @@ export default function MarketDetailPage() {
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Total Volume</span>
             <span className="font-medium">
-              {formatCurrency(market.volume_total)}
+              {formatMarketCurrency(market.volume_total, market)}
             </span>
           </div>
           {market.end_date && (

@@ -1,14 +1,16 @@
 import httpx
-import os
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import asyncio
 from models.schemas import Market, MarketSummary, Platform, MarketStatus
 from utils.cache import market_cache, cached
-
-# Polymarket API endpoints
-POLYMARKET_API_BASE = "https://clob.polymarket.com"
-GAMMA_API_BASE = "https://gamma-api.polymarket.com"
+from services.polymarket_config import (
+    POLYMARKET_CLOB_HOST,
+    POLYMARKET_COLLATERAL_ASSET,
+    POLYMARKET_GAMMA_HOST,
+    POLYMARKET_REQUEST_TIMEOUT_SECONDS,
+    normalize_query,
+)
 
 
 class PolymarketService:
@@ -16,13 +18,13 @@ class PolymarketService:
 
     def __init__(self):
         self.clob_client = httpx.AsyncClient(
-            base_url=POLYMARKET_API_BASE,
-            timeout=30.0,
+            base_url=POLYMARKET_CLOB_HOST,
+            timeout=POLYMARKET_REQUEST_TIMEOUT_SECONDS,
             headers={"Accept": "application/json"},
         )
         self.gamma_client = httpx.AsyncClient(
-            base_url=GAMMA_API_BASE,
-            timeout=30.0,
+            base_url=POLYMARKET_GAMMA_HOST,
+            timeout=POLYMARKET_REQUEST_TIMEOUT_SECONDS,
             headers={"Accept": "application/json"},
         )
 
@@ -62,10 +64,10 @@ class PolymarketService:
             print(f"Error fetching Polymarket market {market_id}: {e}")
             return None
 
-    async def get_market_prices(self, token_id: str) -> Optional[Dict[str, Any]]:
+    async def get_market_prices(self, token_id: str, side: str = "BUY") -> Optional[Dict[str, Any]]:
         """Get current prices from CLOB API."""
         try:
-            response = await self.clob_client.get(f"/price", params={"token_id": token_id})
+            response = await self.clob_client.get("/price", params={"token_id": token_id, "side": side})
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
@@ -75,7 +77,7 @@ class PolymarketService:
     async def get_orderbook(self, token_id: str) -> Optional[Dict[str, Any]]:
         """Get orderbook for a token."""
         try:
-            response = await self.clob_client.get(f"/book", params={"token_id": token_id})
+            response = await self.clob_client.get("/book", params={"token_id": token_id})
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
@@ -143,6 +145,7 @@ class PolymarketService:
         return {
             "id": f"poly_{raw.get('id', '')}",
             "platform": Platform.POLYMARKET.value,
+            "collateral_asset": POLYMARKET_COLLATERAL_ASSET,
             "title": raw.get("question", raw.get("title", "Unknown")),
             "description": raw.get("description", ""),
             "category": raw.get("category", "Other"),

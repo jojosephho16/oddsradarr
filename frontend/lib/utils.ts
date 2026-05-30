@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { POLYMARKET_COLLATERAL_ASSET } from "@/lib/polymarketConfig";
+import { CollateralAsset, Platform } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,6 +27,22 @@ export function formatCurrency(value: number): string {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+export function getPlatformCollateralAsset(platform: Platform): CollateralAsset {
+  return platform === "polymarket" ? POLYMARKET_COLLATERAL_ASSET : "USD";
+}
+
+export function formatCollateralAmount(value: number, collateralAsset?: CollateralAsset | null): string {
+  if (collateralAsset === "pUSD") {
+    return `${Math.round(value).toLocaleString("en-US")} pUSD`;
+  }
+
+  return formatCurrency(value);
+}
+
+export function formatMarketCurrency(value: number, market: { platform: Platform; collateral_asset?: CollateralAsset | null }): string {
+  return formatCollateralAmount(value, market.collateral_asset ?? getPlatformCollateralAsset(market.platform));
 }
 
 export function formatPercent(value: number): string {

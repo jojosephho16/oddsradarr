@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useStore } from "@/store/useStore";
-import { formatCurrency, formatPercent } from "@/lib/utils";
+import { formatMarketCurrency, formatPercent } from "@/lib/utils";
 import { Market } from "@/types";
 
 interface MarketCardProps {
@@ -86,13 +86,13 @@ export default function MarketCard({ market }: MarketCardProps) {
           <div className="bg-muted/50 rounded-lg p-2">
             <p className="text-[10px] text-muted-foreground">Open Interest</p>
             <p className="text-sm font-medium text-accent-bullish">
-              {formatCurrency(market.open_interest)}
+              {formatMarketCurrency(market.open_interest, market)}
             </p>
           </div>
           <div className="bg-muted/50 rounded-lg p-2">
             <p className="text-[10px] text-muted-foreground">24h Volume</p>
             <p className="text-sm font-medium text-accent-volume">
-              {formatCurrency(market.volume_24h)}
+              {formatMarketCurrency(market.volume_24h, market)}
             </p>
           </div>
           <div className="bg-muted/50 rounded-lg p-2">

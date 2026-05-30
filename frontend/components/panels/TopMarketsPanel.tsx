@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useStore } from "@/store/useStore";
-import { formatCurrency, formatNumber } from "@/lib/utils";
+import { formatMarketCurrency } from "@/lib/utils";
 import { MarketSummary } from "@/types";
 
 interface MarketItemProps {
@@ -37,7 +37,7 @@ function MarketItem({ market, rank, metric }: MarketItemProps) {
               {market.platform === "polymarket" ? "P" : "K"}
             </Badge>
             <span className={`text-xs font-medium ${color}`}>
-              {formatCurrency(value)}
+              {formatMarketCurrency(value, market)}
             </span>
           </div>
         </div>

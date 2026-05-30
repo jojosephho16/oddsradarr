@@ -1,4 +1,5 @@
 export type Platform = "polymarket" | "kalshi";
+export type CollateralAsset = "USD" | "pUSD";
 export type MarketStatus = "open" | "closed" | "resolved";
 export type NotificationType = "oi_spike" | "volume_spike" | "probability_change" | "price_alert";
 export type PositionSide = "yes" | "no";
@@ -20,6 +21,7 @@ export interface Position {
 export interface Market {
   id: string;
   platform: Platform;
+  collateral_asset?: CollateralAsset | null;
   title: string;
   description?: string;
   category: string;
@@ -39,6 +41,7 @@ export interface Market {
 export interface MarketSummary {
   id: string;
   platform: Platform;
+  collateral_asset?: CollateralAsset | null;
   title: string;
   category: string;
   probability: number;

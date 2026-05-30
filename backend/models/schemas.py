@@ -9,6 +9,11 @@ class Platform(str, Enum):
     KALSHI = "kalshi"
 
 
+class CollateralAsset(str, Enum):
+    USD = "USD"
+    PUSD = "pUSD"
+
+
 class MarketStatus(str, Enum):
     OPEN = "open"
     CLOSED = "closed"
@@ -45,6 +50,7 @@ class Position(BaseModel):
 class MarketBase(BaseModel):
     id: str
     platform: Platform
+    collateral_asset: Optional[CollateralAsset] = None
     title: str
     description: Optional[str] = None
     category: str
@@ -70,6 +76,7 @@ class Market(MarketBase):
 class MarketSummary(BaseModel):
     id: str
     platform: Platform
+    collateral_asset: Optional[CollateralAsset] = None
     title: str
     category: str
     probability: float
